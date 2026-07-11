@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laptop Lag — Speed It Up</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --accent: #5b8cff;
+    --accent-hover: #7ea2ff;
+    --text: #e8e9ee;
+    --muted: #9aa0ac;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f9;
+      --card: #ffffff;
+      --accent: #3763e0;
+      --accent-hover: #2a4fc0;
+      --text: #1b1d24;
+      --muted: #5a606c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  p.subtitle {
+    color: var(--muted);
+    margin-top: 0;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .trigger {
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 18px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(59, 99, 224, 0.35);
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .trigger:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+  }
+  .trigger:active {
+    transform: translateY(0);
+  }
+  .arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  .trigger.open .arrow {
+    transform: rotate(90deg);
+  }
+
+  .tips {
+    max-width: 640px;
+    width: 100%;
+    margin-top: 28px;
+    display: grid;
+    gap: 14px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+  }
+  .tips.open {
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .tip {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .tip .num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tip h3 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+  }
+  .tip p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+
+  footer {
+    margin-top: 48px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Is your laptop lagging?</h1>
+  <p class="subtitle">Click below to see what's slowing it down — and how to fix it.</p>
+
+  <button class="trigger" id="triggerBtn" aria-expanded="false" aria-controls="tips">
+    Speed up my laptop
+    <span class="arrow">➜</span>
+  </button>
+
+  <div class="tips" id="tips">
+    <div class="tip">
+      <div class="num">1</div>
+      <div>
+        <h3>Disable unnecessary startup programs</h3>
+        <p>Open Task Manager (Ctrl+Shift+Esc) → Startup tab, and disable apps you don't need running at boot. Fewer startup apps means faster boot and more free memory.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">2</div>
+      <div>
+        <h3>Free up disk space</h3>
+        <p>Run Disk Cleanup (Windows) or Storage Management (macOS) to clear temp files, cache, and old downloads. Keep at least 15-20% of your drive free for smooth performance.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">3</div>
+      <div>
+        <h3>Scan for malware</h3>
+        <p>Background malware and adware silently eat CPU and memory. Run a full scan with Windows Defender or your antivirus of choice.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">4</div>
+      <div>
+        <h3>Update your OS and drivers</h3>
+        <p>Outdated graphics, chipset, and storage drivers can cause slowdowns and stutter. Check Windows Update or your manufacturer's support site regularly.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">5</div>
+      <div>
+        <h3>Upgrade to an SSD or add RAM</h3>
+        <p>If you're still on a spinning hard drive, switching to an SSD is the single biggest speed boost you can buy. More RAM helps if you keep many tabs/apps open.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">6</div>
+      <div>
+        <h3>Close background apps and browser tabs</h3>
+        <p>Check Task Manager's Processes tab for memory/CPU hogs. Browsers with dozens of tabs are a common silent drain — close what you're not using.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">7</div>
+      <div>
+        <h3>Switch to a high-performance power plan</h3>
+        <p>Laptops on "Battery Saver" or "Balanced" mode throttle CPU speed. Switch to "Best Performance" when plugged in for demanding tasks.</p>
+      </div>
+    </div>
+    <div class="tip">
+      <div class="num">8</div>
+      <div>
+        <h3>Restart regularly</h3>
+        <p>Restarting clears memory leaks and stuck processes that build up over days of uptime. A weekly restart keeps things running smoothly.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>Laptop Lag — quick diagnostics for a snappier machine.</footer>
+
+  <script>
+    const btn = document.getElementById('triggerBtn');
+    const tips = document.getElementById('tips');
+    btn.addEventListener('click', () => {
+      const isOpen = tips.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) {
+        tips.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  </script>
+
+</body>
+</html>
