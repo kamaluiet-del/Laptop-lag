@@ -12,6 +12,8 @@
     --accent-hover: #7ea2ff;
     --text: #e8e9ee;
     --muted: #9aa0ac;
+    --warn: #ff6b5e;
+    --ok: #3ddb88;
   }
   @media (prefers-color-scheme: light) {
     :root {
@@ -21,6 +23,8 @@
       --accent-hover: #2a4fc0;
       --text: #1b1d24;
       --muted: #5a606c;
+      --warn: #d9463a;
+      --ok: #1e9e5f;
     }
   }
   * { box-sizing: border-box; }
@@ -89,7 +93,7 @@
     transition: max-height 0.4s ease, opacity 0.3s ease;
   }
   .tips.open {
-    max-height: 2000px;
+    max-height: 4000px;
     opacity: 1;
   }
 
@@ -101,6 +105,14 @@
     gap: 14px;
     align-items: flex-start;
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    cursor: pointer;
+  }
+  .tip:hover .num {
+    background: var(--accent-hover);
+  }
+  .tip:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
   .tip .num {
     flex-shrink: 0;
@@ -114,6 +126,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.2s ease;
+  }
+  .tip-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .tip-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
   }
   .tip h3 {
     margin: 0 0 4px;
@@ -124,6 +147,64 @@
     color: var(--muted);
     font-size: 0.92rem;
     line-height: 1.4;
+  }
+  .chevron {
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 2px;
+    transition: transform 0.25s ease;
+  }
+  .tip.tip-open .chevron {
+    transform: rotate(90deg);
+    color: var(--accent);
+  }
+
+  .tip-graphic {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
+  }
+  .tip.tip-open .tip-graphic {
+    max-height: 220px;
+    opacity: 1;
+    margin-top: 14px;
+  }
+  .tip-graphic svg {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    margin: 0 auto;
+  }
+  .tip-graphic .lbl {
+    fill: var(--muted);
+    font-size: 9px;
+    text-anchor: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .tip-graphic .cap {
+    fill: var(--text);
+    font-size: 10.5px;
+    text-anchor: middle;
+  }
+  .tip-graphic .divider {
+    stroke: var(--muted);
+    stroke-opacity: 0.3;
+  }
+  .tip-graphic .warn-fill { fill: var(--warn); }
+  .tip-graphic .warn-stroke { stroke: var(--warn); }
+  .tip-graphic .ok-fill { fill: var(--ok); }
+  .tip-graphic .ok-stroke { stroke: var(--ok); }
+  .tip-graphic .muted-stroke { stroke: var(--muted); }
+  .tip-graphic .muted-fill { fill: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tips, .tip-graphic, .arrow, .chevron, .tip .num {
+      transition: none !important;
+    }
   }
 
   footer {
@@ -145,62 +226,201 @@
   </button>
 
   <div class="tips" id="tips">
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g1">
       <div class="num">1</div>
-      <div>
-        <h3>Disable unnecessary startup programs</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Disable unnecessary startup programs</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Open Task Manager (Ctrl+Shift+Esc) → Startup tab, and disable apps you don't need running at boot. Fewer startup apps means faster boot and more free memory.</p>
+        <div class="tip-graphic" id="g1">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: four apps enabled at startup. After: two apps enabled, two disabled.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <rect class="warn-fill" x="17" y="30" width="18" height="18" rx="4"/>
+            <rect class="warn-fill" x="42" y="30" width="18" height="18" rx="4"/>
+            <rect class="warn-fill" x="67" y="30" width="18" height="18" rx="4"/>
+            <rect class="warn-fill" x="92" y="30" width="18" height="18" rx="4"/>
+            <rect class="ok-fill" x="147" y="30" width="18" height="18" rx="4"/>
+            <rect class="ok-fill" x="172" y="30" width="18" height="18" rx="4"/>
+            <rect fill="none" class="muted-stroke" x="197" y="30" width="18" height="18" rx="4" stroke-width="1.5"/>
+            <rect fill="none" class="muted-stroke" x="222" y="30" width="18" height="18" rx="4" stroke-width="1.5"/>
+            <text class="cap" x="65" y="72">4 apps at launch</text>
+            <text class="cap" x="195" y="72">2 apps at launch</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g2">
       <div class="num">2</div>
-      <div>
-        <h3>Free up disk space</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Free up disk space</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Run Disk Cleanup (Windows) or Storage Management (macOS) to clear temp files, cache, and old downloads. Keep at least 15-20% of your drive free for smooth performance.</p>
+        <div class="tip-graphic" id="g2">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: disk 88% full. After: disk 42% full.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <circle cx="65" cy="42" r="22" fill="none" class="muted-stroke" stroke-opacity="0.25" stroke-width="6"/>
+            <circle cx="65" cy="42" r="22" fill="none" class="warn-stroke" stroke-width="6" stroke-linecap="round" stroke-dasharray="122 138" transform="rotate(-90 65 42)"/>
+            <circle cx="195" cy="42" r="22" fill="none" class="muted-stroke" stroke-opacity="0.25" stroke-width="6"/>
+            <circle cx="195" cy="42" r="22" fill="none" class="ok-stroke" stroke-width="6" stroke-linecap="round" stroke-dasharray="58 138" transform="rotate(-90 195 42)"/>
+            <text class="cap" x="65" y="82">88% full</text>
+            <text class="cap" x="195" y="82">42% full</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g3">
       <div class="num">3</div>
-      <div>
-        <h3>Scan for malware</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Scan for malware</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Background malware and adware silently eat CPU and memory. Run a full scan with Windows Defender or your antivirus of choice.</p>
+        <div class="tip-graphic" id="g3">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: threats found. After: system clean.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <circle cx="65" cy="42" r="22" fill="none" class="warn-stroke" stroke-width="3"/>
+            <rect class="warn-fill" x="63" y="30" width="4" height="14" rx="2"/>
+            <circle class="warn-fill" cx="65" cy="50" r="2.4"/>
+            <circle cx="195" cy="42" r="22" fill="none" class="ok-stroke" stroke-width="3"/>
+            <polyline points="185,42 192,50 206,32" fill="none" class="ok-stroke" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text class="cap" x="65" y="72">3 threats found</text>
+            <text class="cap" x="195" y="72">System clean</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g4">
       <div class="num">4</div>
-      <div>
-        <h3>Update your OS and drivers</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Update your OS and drivers</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Outdated graphics, chipset, and storage drivers can cause slowdowns and stutter. Check Windows Update or your manufacturer's support site regularly.</p>
+        <div class="tip-graphic" id="g4">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: drivers outdated. After: fully up to date.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <circle cx="65" cy="42" r="22" fill="none" class="muted-stroke" stroke-opacity="0.25" stroke-width="6"/>
+            <circle cx="65" cy="42" r="22" fill="none" class="warn-stroke" stroke-width="6" stroke-linecap="round" stroke-dasharray="35 138" transform="rotate(-90 65 42)"/>
+            <circle cx="195" cy="42" r="22" fill="none" class="ok-stroke" stroke-width="6" stroke-linecap="round" stroke-dasharray="138 138" transform="rotate(-90 195 42)"/>
+            <text class="cap" x="65" y="82">Drivers outdated</text>
+            <text class="cap" x="195" y="82">Up to date</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g5">
       <div class="num">5</div>
-      <div>
-        <h3>Upgrade to an SSD or add RAM</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Upgrade to an SSD or add RAM</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>If you're still on a spinning hard drive, switching to an SSD is the single biggest speed boost you can buy. More RAM helps if you keep many tabs/apps open.</p>
+        <div class="tip-graphic" id="g5">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: spinning hard drive. After: solid state drive.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <rect x="30" y="28" width="70" height="36" rx="6" fill="none" class="warn-stroke" stroke-width="2"/>
+            <circle cx="65" cy="46" r="10" fill="none" class="warn-stroke" stroke-width="2"/>
+            <circle class="warn-fill" cx="65" cy="46" r="2"/>
+            <rect x="160" y="28" width="70" height="36" rx="6" fill="none" class="ok-stroke" stroke-width="2"/>
+            <polyline points="188,52 194,38 197,46 203,34" fill="none" class="ok-stroke" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text class="cap" x="65" y="80">5400rpm HDD</text>
+            <text class="cap" x="195" y="80">NVMe SSD</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g6">
       <div class="num">6</div>
-      <div>
-        <h3>Close background apps and browser tabs</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Close background apps and browser tabs</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Check Task Manager's Processes tab for memory/CPU hogs. Browsers with dozens of tabs are a common silent drain — close what you're not using.</p>
+        <div class="tip-graphic" id="g6">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: twelve tabs open. After: one tab open.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <rect x="35" y="42" width="60" height="24" rx="5" fill="none" class="warn-stroke" stroke-width="1.5" stroke-opacity="0.5"/>
+            <rect x="30" y="36" width="60" height="24" rx="5" fill="none" class="warn-stroke" stroke-width="1.5" stroke-opacity="0.75"/>
+            <rect x="25" y="30" width="60" height="24" rx="5" class="warn-fill"/>
+            <rect x="165" y="30" width="60" height="24" rx="5" class="ok-fill"/>
+            <text class="cap" x="65" y="80">12 tabs open</text>
+            <text class="cap" x="195" y="80">1 tab open</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g7">
       <div class="num">7</div>
-      <div>
-        <h3>Switch to a high-performance power plan</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Switch to a high-performance power plan</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Laptops on "Battery Saver" or "Balanced" mode throttle CPU speed. Switch to "Best Performance" when plugged in for demanding tasks.</p>
+        <div class="tip-graphic" id="g7">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Before: battery saver mode. After: best performance mode.">
+            <text class="lbl" x="65" y="14">Before</text>
+            <text class="lbl" x="195" y="14">After</text>
+            <line class="divider" x1="130" y1="8" x2="130" y2="90" stroke-dasharray="3 4"/>
+            <line x1="25" y1="46" x2="105" y2="46" class="muted-stroke" stroke-width="4" stroke-linecap="round" stroke-opacity="0.35"/>
+            <circle cx="38" cy="46" r="8" class="warn-fill"/>
+            <line x1="155" y1="46" x2="235" y2="46" class="muted-stroke" stroke-width="4" stroke-linecap="round" stroke-opacity="0.35"/>
+            <circle cx="222" cy="46" r="8" class="ok-fill"/>
+            <polyline points="219,34 215,42 220,42 217,50" fill="none" class="ok-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <text class="cap" x="65" y="76">Battery saver</text>
+            <text class="cap" x="195" y="76">Best performance</text>
+          </svg>
+        </div>
       </div>
     </div>
-    <div class="tip">
+
+    <div class="tip" tabindex="0" role="button" aria-expanded="false" aria-controls="g8">
       <div class="num">8</div>
-      <div>
-        <h3>Restart regularly</h3>
+      <div class="tip-body">
+        <div class="tip-head">
+          <h3>Restart regularly</h3>
+          <span class="chevron">➜</span>
+        </div>
         <p>Restarting clears memory leaks and stuck processes that build up over days of uptime. A weekly restart keeps things running smoothly.</p>
+        <div class="tip-graphic" id="g8">
+          <svg viewBox="0 0 260 110" role="img" aria-label="Restart icon: circular refresh arrows around a power symbol.">
+            <circle cx="130" cy="46" r="30" fill="none" class="ok-stroke" stroke-width="4" stroke-linecap="round" stroke-dasharray="150 38" transform="rotate(-20 130 46)"/>
+            <polygon points="152,20 152,32 163,26" class="ok-fill"/>
+            <line x1="130" y1="32" x2="130" y2="46" class="ok-stroke" stroke-width="4" stroke-linecap="round"/>
+            <path d="M 117 40 A 15 15 0 1 1 117 52" fill="none" class="ok-stroke" stroke-width="4" stroke-linecap="round"/>
+            <text class="cap" x="130" y="92">Clears memory &amp; stuck processes</text>
+          </svg>
+        </div>
       </div>
     </div>
+
   </div>
 
   <footer>Laptop Lag — quick diagnostics for a snappier machine.</footer>
@@ -215,6 +435,20 @@
       if (isOpen) {
         tips.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
+    });
+
+    document.querySelectorAll('.tip').forEach((tip) => {
+      const toggleTip = () => {
+        const isOpen = tip.classList.toggle('tip-open');
+        tip.setAttribute('aria-expanded', isOpen);
+      };
+      tip.addEventListener('click', toggleTip);
+      tip.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleTip();
+        }
+      });
     });
   </script>
 
